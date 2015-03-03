@@ -1,13 +1,44 @@
-name: sample
+name: polymer_spa_example
 version: 0.0.1
-description: A sample library.
+description: A simple example of a full polymer app with multiple pages.
 author: Dart Team <misc@dartlang.org>
-homepage: https://github.com/dart-lang/sample
+homepage: https://github.com/dart-lang/polymer-spa-example
 
 environment:
-  sdk: '>=1.0.0 <2.0.0'
+  sdk: '>=1.9.0-dev.7.1 <2.0.0'
 
-#dependencies:
-#  lib_name: any
-dev_dependencies:
-  unittest: any
+dependencies:
+  polymer: '^0.16.0'
+  core_elements: '^0.6.1'
+  paper_elements: '^0.6.2'
+  route_hierarchical: "^0.6.0"
+
+dependency_overrides:
+  polymer:
+    git:
+      url: git@github.com:dart-lang/polymer-dart.git
+      ref: smoke-generator
+  core_elements:
+    git:
+      url: git@github.com:dart-lang/core-elements.git
+      ref: 0.6.1
+  paper_elements:
+    git:
+      url: git@github.com:dart-lang/paper-elements.git
+      ref: 0.6.2
+  custom_element_apigen:
+    git:
+      url: git@github.com:dart-lang/custom-element-apigen.git
+      ref: reorg
+  web_components:
+    git:
+      url: git@github.com:dart-lang/web-components.git
+      ref: crawler
+  initialize:
+    git:
+      url: git@github.com:dart-lang/initialize.git
+      ref: exports
+
+transformers:
+- polymer:
+    entry_points: web/index.html
