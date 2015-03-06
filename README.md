@@ -1,11 +1,4 @@
-# Polymer Single Page App Example
+# Polymer Single Page App Live Demo
 
-A simple example of a full polymer app with multiple pages. It is the end
-solution for the tutorial which lives [here][tutorial].
-
-## Features and bugs
-
-Please file feature requests and bugs at the [issue tracker][tracker].
-
-[tracker]: https://github.com/dart-lang/polymer-spa-example/issues
-[tutorial]: https://dartlang.org/articles/spa/
+This branch hosts the built output of the Polymer Single Page App example. It is
+used to publish the example to github pages.
