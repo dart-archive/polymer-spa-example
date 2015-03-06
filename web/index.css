@@ -1,0 +1,9 @@
+body {
+  font-family: "RobotoDraft";
+  font-weight: 300;
+}
+
+body /deep/ core-toolbar {
+  background-color: #03a9f4;
+  color: #fff;
+}
