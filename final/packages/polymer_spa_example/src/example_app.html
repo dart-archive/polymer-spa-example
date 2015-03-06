@@ -1,0 +1,47 @@
+<polymer-element name="example-app">
+  <template>
+    <link rel="stylesheet" href="example_app.css">
+
+    <!-- Keyboard nav controller. -->
+    <core-a11y-keys id="keys" target="{{body}}"
+                    keys="up down left right space space+shift"
+                    on-keys-pressed="{{keyHandler}}"></core-a11y-keys>
+
+    <core-scaffold id="scaffold">
+      <nav>
+        <core-toolbar>
+          <span>Single Page Polymer</span>
+        </core-toolbar>
+        <core-menu id="menu" valueattr="hash" selected="{{route}}">
+          <template repeat="{{page in pages}}">
+            <paper-item hash="{{page.path}}"
+                        on-click="{{menuItemClicked}}" noink>
+              <core-icon icon="label{{route != page.path ? '-outline' : ''}}">
+              </core-icon>
+              <a _href="#{{page.path}}">{{page.name}}</a>
+            </paper-item>
+          </template>
+        </core-menu>
+      </nav>
+
+      <core-toolbar tool flex>
+        <div flex>{{selectedPage.name}}</div>
+        <core-icon-button icon="refresh"></core-icon-button>
+        <core-icon-button icon="add"></core-icon-button>
+      </core-toolbar>
+
+      <div layout horizontal center-center fit>
+        <core-animated-pages id="pages" selected="{{route}}" valueattr="hash"
+                             transitions="slide-from-right"
+                             on-tap="{{cyclePages}}">
+          <template repeat="{{page in pages}}">
+            <section hash="{{page.path}}" layout vertical center-center>
+              <div>{{page.name}}</div>
+            </section>
+          </template>
+        </core-animated-pages>
+      </div>
+
+    </core-scaffold>
+  </template>
+</polymer-element>
