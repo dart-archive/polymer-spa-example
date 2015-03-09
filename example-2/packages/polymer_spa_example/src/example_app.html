@@ -1,0 +1,35 @@
+<polymer-element name="example-app">
+  <template>
+    <link rel="stylesheet" href="example_app.css">
+    <core-scaffold id="scaffold">
+      <nav>
+        <core-toolbar><span>Single Page Polymer</span></core-toolbar>
+        <core-menu valueattr="path" selected="{{route}}">
+          <template repeat="{{page in pages}}">
+            <paper-item path="{{page.path}}" noink>
+              <core-icon icon="label-outline"></core-icon>
+              <a _href="#{{page.path}}">{{page.name}}</a>
+            </paper-item>
+          </template>
+        </core-menu>
+      </nav>
+      <!-- flex makes the bar span across the top of the main content area -->
+      <core-toolbar tool flex>
+        <!-- flex spaces this element and justifies the icons to the right-side -->
+        <div flex>Application</div>
+        <core-icon-button icon="refresh"></core-icon-button>
+        <core-icon-button icon="add"></core-icon-button>
+      </core-toolbar>
+      <div layout horizontal center-center fit>
+        <core-animated-pages valueattr="path" selected="{{route}}"
+                     transitions="slide-from-right">
+          <template repeat="{{page in pages}}">
+            <section path="{{page.path}}" layout vertical center-center>
+              <div>{{page.name}}</div>
+            </section>
+          </template>
+        </core-animated-pages>
+      </div>
+    </core-scaffold>
+  </template>
+</polymer-element>
