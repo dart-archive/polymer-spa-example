@@ -1,7 +1,13 @@
-body {
+:host {
   font-family: "RobotoDraft";
   font-weight: 300;
 }
+
+:host /deep/ core-toolbar {
+  background-color: #03a9f4;
+  color: #fff;
+}
+
 
 core-animated-pages {
   width: 85%;
@@ -14,11 +20,6 @@ core-animated-pages > * {
   border-radius: 5px;
   font-size: 50px;
   background-color: white;
-}
-
-body /deep/ core-toolbar {
-  background-color: #03a9f4;
-  color: #fff;
 }
 
 core-menu {

@@ -9,73 +9,12 @@ BSD-style license that can be found in the LICENSE file.
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <title>Single page app using Polymer</title>
-  <link rel="stylesheet" href="index.css">
 </head>
 <body unresolved fullbleed>
-  <core-scaffold id="scaffold">
-    <nav>
-      <core-toolbar><span>Single Page Polymer</span></core-toolbar>
-      <core-menu selected="0">
-        <paper-item noink>
-          <core-icon icon="label-outline"></core-icon>
-          <a href="#one">Single</a>
-        </paper-item>
-        <paper-item noink>
-          <core-icon icon="label-outline"></core-icon>
-          <a href="#two">page</a>
-        </paper-item>
-        <paper-item noink>
-          <core-icon icon="label-outline"></core-icon>
-          <a href="#three">app</a>
-        </paper-item>
-        <paper-item noink>
-          <core-icon icon="label-outline"></core-icon>
-          <a href="#four">using</a>
-        </paper-item>
-        <paper-item noink>
-          <core-icon icon="label-outline"></core-icon>
-          <a href="#five">Polymer</a>
-        </paper-item>
-      </core-menu>
-    </nav>
-    <!-- flex makes the bar span across the top of the main content area -->
-    <core-toolbar tool flex>
-      <!-- flex spaces this element and justifies the icons to the right-side -->
-      <div flex>Application</div>
-      <core-icon-button icon="refresh"></core-icon-button>
-      <core-icon-button icon="add"></core-icon-button>
-    </core-toolbar>
-    <div layout horizontal center-center fit>
-      <core-animated-pages id="pages" selected="0">
-        <section layout vertical center-center>
-          <div>Single</div>
-        </section>
-        <section layout vertical center-center>
-          <div>page</div>
-        </section>
-        <section layout vertical center-center>
-          <div>app</div>
-        </section>
-        <section layout vertical center-center>
-          <div>using</div>
-        </section>
-        <section layout vertical center-center>
-          <div>Polymer</div>
-        </section>
-      </core-animated-pages>
-    </div>
-  </core-scaffold>
+  <example-app></example-app>
 
   <script type="application/dart">
-    import 'package:core_elements/core_animated_pages.dart';
-    import 'package:core_elements/core_animated_pages/transitions/slide_from_right.dart';
-    import 'package:core_elements/core_icon.dart';
-    import 'package:core_elements/core_icon_button.dart';
-    import 'package:core_elements/core_menu.dart';
-    import 'package:core_elements/core_scaffold.dart';
-    import 'package:core_elements/core_toolbar.dart';
-    import 'package:core_elements/roboto.dart';
-    import 'package:paper_elements/paper_item.dart';
+    import 'package:polymer_spa_example/example_app.dart';
     export 'package:polymer/init.dart';
   </script>
 </body>
