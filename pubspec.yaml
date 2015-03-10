@@ -13,28 +13,6 @@ dependencies:
   paper_elements: '^0.6.2'
   route_hierarchical: "^0.6.0"
 
-dependency_overrides:
-  polymer:
-    git:
-      url: https://github.com/dart-lang/polymer-dart.git
-      ref: smoke-generator
-  core_elements:
-    git:
-      url: https://github.com/dart-lang/core-elements.git
-      ref: 0.6.1
-  paper_elements:
-    git:
-      url: https://github.com/dart-lang/paper-elements.git
-      ref: 0.6.2
-  custom_element_apigen:
-    git:
-      url: https://github.com/dart-lang/custom-element-apigen.git
-      ref: reorg
-  web_components:
-    git:
-      url: https://github.com/dart-lang/web-components.git
-      ref: html_imports
-
 transformers:
 - polymer:
     entry_points: web/index.html
