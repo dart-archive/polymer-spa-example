@@ -70,7 +70,7 @@ class ExampleApp extends PolymerElement {
   /// Updates [selectedPage] and the current route whenever the route changes.
   void routeChanged() {
     if (route is! String) return;
-    if (route == '') {
+    if (route.isEmpty) {
       selectedPage = pages.firstWhere((page) => page.isDefault);
     } else {
       selectedPage = pages.firstWhere((page) => page.path == route);
