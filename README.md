@@ -8,4 +8,4 @@ solution for the tutorial which lives [here][tutorial].
 Please file feature requests and bugs at the [issue tracker][tracker].
 
 [tracker]: https://github.com/dart-lang/polymer-spa-example/issues
-[tutorial]: https://dartlang.org/polymer/spa/
+[tutorial]: https://www.dartlang.org/polymer/spa/
