@@ -17,4 +17,4 @@ transformers:
 - polymer:
     entry_points: web/index.html
 - $dart2js:
-    $include: web/index.html.polymer.bootstrap.dart
+    $include: "**/*.polymer.bootstrap.dart"
