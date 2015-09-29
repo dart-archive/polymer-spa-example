@@ -55,8 +55,8 @@ class ExampleApp extends PolymerElement {
 
   /// Convenience getters that return the expected types to avoid casts.
   IronA11yKeys get keys => $['keys'];
-  NeonAnimatedPages get corePages => $['pages'];
-  PaperMenu get menu => $['menu'];
+  NeonAnimatedPages get neonPages => $['pages'];
+  PaperDrawerPanel get menu => $['drawerPanel'];
   BodyElement get body => document.body;
 
   ready() {
@@ -104,11 +104,11 @@ class ExampleApp extends PolymerElement {
   }
 
   /// Handler for key events.
-  @Listen('on-keys-pressed')
+  @eventHandler
   void keyHandler(e, [_]) {
     var detail = new JsObject.fromBrowserObject(e)['detail'];
     print(detail);
-    switch (detail['key']) {
+   /* switch (detail['key']) {
       case 'left':
       case 'up':
         corePages.selectPrevious(false);
@@ -131,26 +131,23 @@ class ExampleApp extends PolymerElement {
         route = pages[num - 1].path;
       }
       return;
-    } catch (e) {}
+    } catch (e) {}*/
   }
 
   /// Cycle pages on click.
   @eventHandler
-  void cyclePages(event, [_]) {
-    //TODO: cyclePages
-  /*  var event = new JsObject.fromBrowserObject(e);
+  void cyclePages(Event event, [_]) {
     // Clicks on links should not cycle pages.
-    if (event['target'].localName == 'a') {
+    if (event.target.toString() == 'a') {
       return;
     }
-
-    event['shiftKey'] ? sender.selectPrevious(true) : sender.selectNext(true);*/
+    (_["sourceEvent"] as MouseEvent).shiftKey ? neonPages.selectPrevious() : neonPages.selectNext();
   }
 
   /// Close the menu whenever you select an item.
   @eventHandler
   void menuItemClicked(event, [_]) {
-    // scaffold.closeDrawer();
+    menu.closeDrawer();
   }
 
   @eventHandler
