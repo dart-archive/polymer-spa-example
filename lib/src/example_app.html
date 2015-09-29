@@ -14,7 +14,7 @@
                 <paper-toolbar>
                     <span>Single Page Polymer</span>
                 </paper-toolbar>
-                <paper-menu id="menu" valueattr="hash" selected="{{route}}">
+                <paper-menu id="menu" valueattr="hash" selected="{{routeIdx}}">
                     <template is="dom-repeat" items="{{pages}}">
                         <paper-item hash="{{item.path}}"
                                     on-click="menuItemClicked" noink>
@@ -41,7 +41,7 @@
                 <div class="layout horizontal center-center fit">
 
                     <!--fixme: animation don't work-->
-                    <neon-animated-pages id="pages" selected="{{route}}" valueattr="hash"
+                    <neon-animated-pages id="pages" selected="{{routeIdx}}" valueattr="hash"
                                          transitions="slide-from-right"
                                          on-tap="cyclePages">
                         <template is="dom-repeat" items="{{pages}}">

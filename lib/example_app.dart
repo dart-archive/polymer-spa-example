@@ -32,7 +32,7 @@ Can't be const because of JsProxy ??
 @PolymerRegister('example-app')
 class ExampleApp extends PolymerElement {
   /// The current selected [Page].
-  @observe Page selectedPage;
+  @observable Page selectedPage;
 
   /// The list of pages in our app.
   final List<Page> pages =  [
@@ -44,7 +44,9 @@ class ExampleApp extends PolymerElement {
   ];
 
   /// The path of the current [Page].
-  String route;
+  int routeIdx;
+
+  @observable var route;
 
   /// The [Router] which is going to control the app.
   final Router router = new Router(useFragment: true);
@@ -53,7 +55,6 @@ class ExampleApp extends PolymerElement {
 
   /// Convenience getters that return the expected types to avoid casts.
   IronA11yKeys get keys => $['keys'];
-  //CoreScaffold get scaffold => $['scaffold'];
   NeonAnimatedPages get corePages => $['pages'];
   PaperMenu get menu => $['menu'];
   BodyElement get body => document.body;
@@ -76,20 +77,20 @@ class ExampleApp extends PolymerElement {
     var keysToAdd = pages.map((page) => ++i);
     keys.keys = '${keys.keys} ${keysToAdd.join(' ')}';
 
-
     //fixme: need to update the view
     set('pages', pages);
-    set('route', route);
+
   }
 
   /// Updates [selectedPage] and the current route whenever the route changes.
-  @Observe('route')
-  void routeChanged(String newRoute) {
-    if (newRoute is! String) return;
-    if (newRoute.isEmpty) {
-      selectedPage = pages.firstWhere((page) => page.isDefault);
+  @Observe('routeIdx')
+  void routeIdxChanged(int newRouteIdx) {
+    if (newRouteIdx == null || newRouteIdx > pages.length) return;
+    route = pages[newRouteIdx].path;
+    if (route.isEmpty) {
+      set('selectedPage', pages.firstWhere((page) => page.isDefault));
     } else {
-      selectedPage = pages.firstWhere((page) => page.path == newRoute);
+      set('selectedPage', pages.firstWhere((page) => page.path == route));
     }
     router.go(selectedPage.name, {});
   }
@@ -97,12 +98,15 @@ class ExampleApp extends PolymerElement {
   /// Updates [route] whenever we enter a new route.
   void enterRoute(RouteEvent e) {
     route = e.path;
+    if (route != null && route.isNotEmpty) {
+      Page page = pages.firstWhere((Page item) => item.path == route);
+      set('routeIdx', pages.indexOf(page));
+    }
   }
 
   /// Handler for key events.
   @eventHandler
   void keyHandler(e, [_]) {
-    print(e);
     var detail = new JsObject.fromBrowserObject(e)['detail'];
 
     switch (detail['key']) {
@@ -132,7 +136,7 @@ class ExampleApp extends PolymerElement {
   }
 
   /// Cycle pages on click.
-  ///  @eventHandler
+  @eventHandler
   void cyclePages(event, [_]) {
     //TODO: cyclePages
   /*  var event = new JsObject.fromBrowserObject(e);
