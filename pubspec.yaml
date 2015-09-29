@@ -6,15 +6,29 @@ homepage: https://github.com/dart-lang/polymer-spa-example
 
 environment:
   sdk: '>=1.9.0-dev.7.1 <2.0.0'
-
+ 
 dependencies:
-  polymer: '^0.16.0'
-  core_elements: '^0.6.1'
-  paper_elements: '^0.6.2'
+  polymer:
+      git:
+        url: git@github.com:dart-lang/polymer-dart.git
+        ref: behaviors
+  polymer_elements:
+      git: https://github.com/dart-lang/polymer_elements.git
+  polymer_interop: ^0.2.0
   route_hierarchical: "^0.6.0"
-
+  web_components: ^0.12.0
+  reflectable: ^0.2.1
+dependency_overrides:
+  reflectable: 0.2.1
+  polymer_interop:
+    git:
+      ref: 0.2.0-dev
+      url: https://github.com/dart-lang/polymer_interop.git
 transformers:
-- polymer:
-    entry_points: web/index.html
+- web_components:
+     entry_points: web/index.html
+- reflectable:
+    entry_points: web/index.dart
 - $dart2js:
-    $include: "**/*.polymer.bootstrap.dart"
+    minify: true
+    $include: '**/*.bootstrap.initialize.dart'
