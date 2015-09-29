@@ -31,7 +31,6 @@
                 <!-- Main Toolbar -->
                 <paper-toolbar>
                     <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-                    <!--fixme: title don't work-->
                     <div class="flex">{{selectedPage.name}}</div>
                     <paper-icon-button icon="refresh"></paper-icon-button>
                     <paper-icon-button icon="add"></paper-icon-button>
@@ -42,7 +41,7 @@
 
                     <!--fixme: animation don't work-->
                     <neon-animated-pages id="pages" selected="{{routeIdx}}" valueattr="hash"
-                                         transitions="slide-from-right"
+                                         entry-animation="slide-from-right-animation"
                                          on-tap="cyclePages">
                         <template is="dom-repeat" items="{{pages}}">
                             <section hash="{{item.path}}" class="layout vertical center-center">

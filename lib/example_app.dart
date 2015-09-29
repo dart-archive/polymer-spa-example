@@ -63,7 +63,6 @@ class ExampleApp extends PolymerElement {
     // Set up the routes for all the pages.
 
     pages.forEach((Page page) {
-      print(page.name);
       router.root.addRoute(
           name: page.name,
           path: page.path,
@@ -105,10 +104,10 @@ class ExampleApp extends PolymerElement {
   }
 
   /// Handler for key events.
-  @eventHandler
+  @Listen('on-keys-pressed')
   void keyHandler(e, [_]) {
     var detail = new JsObject.fromBrowserObject(e)['detail'];
-
+    print(detail);
     switch (detail['key']) {
       case 'left':
       case 'up':
