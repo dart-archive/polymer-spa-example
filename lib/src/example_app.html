@@ -18,7 +18,7 @@
                     <template is="dom-repeat" items="{{pages}}">
                         <paper-item hash="{{item.path}}"
                                     on-click="menuItemClicked" noink>
-                            <iron-icon icon="{{computeIconName(item}}">
+                            <iron-icon icon$="{{computeIconName(item)}}">
                             </iron-icon>
                             <a href$="{{computeUrl(item.path)}}">{{item.name}}</a>
                         </paper-item>
@@ -36,6 +36,7 @@
                 <div class="layout horizontal center-center fit">
                     <neon-animated-pages id="pages" selected="{{routeIdx}}" valueattr="hash"
                                          entry-animation="slide-from-right-animation"
+                                         exit-animation="slide-from-left-animation"
                                          on-tap="cyclePages">
                         <template is="dom-repeat" items="{{pages}}">
                             <section hash="{{item.path}}" class="layout vertical center-center">
