@@ -10,21 +10,11 @@ BSD-style license that can be found in the LICENSE file.
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <title>Single page app using Polymer</title>
 </head>
-<body unresolved fullbleed>
+<body unresolved class="fullbleed">
 
 <example-app>
 </example-app>
 
-<script type="application/dart">
-  // Note: This import is necessary even though its not being used directly. It
-  // contains @CustomTag, @HtmlImport, and other Initializer annotations which
-  // bootstrap the application. The dartdoc comment below gets rid of the unused
-  // import warning because it refers to the ExampleApp class in this import.
-  import 'package:polymer_spa_example/example_app.dart';
-  import 'package:polymer/polymer.dart';
-
-  /// Registers the custom-element [ExampleApp] and all its dependencies.
-  main() => initPolymer();
-</script>
+<script type="application/dart" src="index.dart"></script>
 </body>
 </html>

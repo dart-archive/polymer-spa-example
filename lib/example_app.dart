@@ -10,35 +10,41 @@ import 'dart:js';
 import 'package:polymer/polymer.dart';
 import 'package:route_hierarchical/client.dart';
 import 'src/elements.dart';
+import 'package:web_components/web_components.dart' show HtmlImport;
+
 
 /// Simple class which maps page names to paths.
-class Page {
+class Page extends JsProxy {
   final String name;
   final String path;
   final bool isDefault;
-  const Page(this.name, this.path, {this.isDefault: false});
+
+  /*
+Can't be const because of JsProxy ??
+ */
+  Page(this.name, this.path, {this.isDefault: false});
 
   String toString() => '$name';
 }
 
 /// Element representing the entire example app. There should only be one of
 /// these in existence.
-@CustomTag('example-app')
+@PolymerRegister('example-app')
 class ExampleApp extends PolymerElement {
   /// The current selected [Page].
-  @observable Page selectedPage;
+  @observe Page selectedPage;
 
   /// The list of pages in our app.
-  final List<Page> pages = const [
-    const Page('Single', 'one', isDefault: true),
-    const Page('page', 'two'),
-    const Page('app', 'three'),
-    const Page('using', 'four'),
-    const Page('Polymer', 'five'),
+  final List<Page> pages =  [
+    new Page('Single', 'one', isDefault: true),
+    new Page('page', 'two'),
+    new Page('app', 'three'),
+    new Page('using', 'four'),
+    new Page('Polymer', 'five')
   ];
 
   /// The path of the current [Page].
-  @observable var route;
+  String route;
 
   /// The [Router] which is going to control the app.
   final Router router = new Router(useFragment: true);
@@ -46,34 +52,44 @@ class ExampleApp extends PolymerElement {
   ExampleApp.created() : super.created();
 
   /// Convenience getters that return the expected types to avoid casts.
-  CoreA11yKeys get keys => $['keys'];
-  CoreScaffold get scaffold => $['scaffold'];
-  CoreAnimatedPages get corePages => $['pages'];
-  CoreMenu get menu => $['menu'];
+  IronA11yKeys get keys => $['keys'];
+  //CoreScaffold get scaffold => $['scaffold'];
+  NeonAnimatedPages get corePages => $['pages'];
+  PaperMenu get menu => $['menu'];
   BodyElement get body => document.body;
 
-  domReady() {
+  ready() {
     // Set up the routes for all the pages.
-    for (var page in pages) {
+
+    pages.forEach((Page page) {
+      print(page.name);
       router.root.addRoute(
-          name: page.name, path: page.path, defaultRoute: page.isDefault,
+          name: page.name,
+          path: page.path,
+          defaultRoute: page.isDefault,
           enter: enterRoute);
-    }
+    });
     router.listen();
 
     // Set up the number keys to send you to pages.
     int i = 0;
     var keysToAdd = pages.map((page) => ++i);
     keys.keys = '${keys.keys} ${keysToAdd.join(' ')}';
+
+
+    //fixme: need to update the view
+    set('pages', pages);
+    set('route', route);
   }
 
   /// Updates [selectedPage] and the current route whenever the route changes.
-  void routeChanged() {
-    if (route is! String) return;
-    if (route.isEmpty) {
+  @Observe('route')
+  void routeChanged(String newRoute) {
+    if (newRoute is! String) return;
+    if (newRoute.isEmpty) {
       selectedPage = pages.firstWhere((page) => page.isDefault);
     } else {
-      selectedPage = pages.firstWhere((page) => page.path == route);
+      selectedPage = pages.firstWhere((page) => page.path == newRoute);
     }
     router.go(selectedPage.name, {});
   }
@@ -84,7 +100,9 @@ class ExampleApp extends PolymerElement {
   }
 
   /// Handler for key events.
-  void keyHandler(e) {
+  @eventHandler
+  void keyHandler(e, [_]) {
+    print(e);
     var detail = new JsObject.fromBrowserObject(e)['detail'];
 
     switch (detail['key']) {
@@ -97,7 +115,8 @@ class ExampleApp extends PolymerElement {
         corePages.selectNext(false);
         return;
       case 'space':
-        detail['shift'] ? corePages.selectPrevious(false)
+        detail['shift']
+            ? corePages.selectPrevious(false)
             : corePages.selectNext(false);
         return;
     }
@@ -109,22 +128,31 @@ class ExampleApp extends PolymerElement {
         route = pages[num - 1].path;
       }
       return;
-    } catch(e) {}
+    } catch (e) {}
   }
 
   /// Cycle pages on click.
-  void cyclePages(Event e, detail, sender) {
-    var event = new JsObject.fromBrowserObject(e);
+  ///  @eventHandler
+  void cyclePages(event, [_]) {
+    //TODO: cyclePages
+  /*  var event = new JsObject.fromBrowserObject(e);
     // Clicks on links should not cycle pages.
     if (event['target'].localName == 'a') {
       return;
     }
 
-    event['shiftKey'] ? sender.selectPrevious(true) : sender.selectNext(true);
+    event['shiftKey'] ? sender.selectPrevious(true) : sender.selectNext(true);*/
   }
 
   /// Close the menu whenever you select an item.
-  void menuItemClicked(_) {
-    scaffold.closeDrawer();
+  @eventHandler
+  void menuItemClicked(event, [_]) {
+    // scaffold.closeDrawer();
   }
+
+  @eventHandler
+  String computeUrl(String url) => "#$url";
+
+  @eventHandler
+  String computeIconName(Page item) => "label" + (route != item.path ? '-outline' : '');
 }

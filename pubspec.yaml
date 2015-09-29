@@ -5,7 +5,7 @@ author: Dart Team <misc@dartlang.org>
 homepage: https://github.com/dart-lang/polymer-spa-example
 
 environment:
-  sdk: '>=1.9.0-dev.7.1 <2.0.0'
+  sdk: '>=1.6.0 <2.0.0'
  
 dependencies:
   polymer:
@@ -30,5 +30,4 @@ transformers:
 - reflectable:
     entry_points: web/index.dart
 - $dart2js:
-    minify: true
     $include: '**/*.bootstrap.initialize.dart'
