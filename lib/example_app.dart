@@ -43,7 +43,7 @@ class ExampleApp extends PolymerElement {
     new Page('Polymer', 'five')
   ];
 
-  /// The path of the current [Page].
+  /// Index of the current [Page]
   int routeIdx;
 
   @observable var route;
@@ -84,8 +84,11 @@ class ExampleApp extends PolymerElement {
   /// Updates [selectedPage] and the current route whenever the route changes.
   @Observe('routeIdx')
   void routeIdxChanged(int newRouteIdx) {
-    if (newRouteIdx == null || newRouteIdx > pages.length) return;
-    route = pages[newRouteIdx].path;
+    if (newRouteIdx >= 0 && newRouteIdx < pages.length) {
+      route = pages[newRouteIdx].path;
+    } else {
+      route = "";
+    }
     if (route.isEmpty) {
       set('selectedPage', pages.firstWhere((page) => page.isDefault));
     } else {
@@ -100,15 +103,18 @@ class ExampleApp extends PolymerElement {
     if (route != null && route.isNotEmpty) {
       Page page = pages.firstWhere((Page item) => item.path == route);
       set('routeIdx', pages.indexOf(page));
+    } else {
+      set('routeIdx', -1);
     }
   }
 
   /// Handler for key events.
   @eventHandler
-  void keyHandler(e, [_]) {
-    var detail = new JsObject.fromBrowserObject(e)['detail'];
-    print(detail);
-   /* switch (detail['key']) {
+  void keyHandler(event, [_]) {
+    print("keyEvent $event");
+   /*
+     var detail = new JsObject.fromBrowserObject(e)['detail'];
+   switch (detail['key']) {
       case 'left':
       case 'up':
         corePages.selectPrevious(false);
