@@ -11,7 +11,7 @@ dependencies:
   polymer:
       git:
         url: git@github.com:dart-lang/polymer-dart.git
-        ref: behaviors
+        ref: 1.0.0-rc.1
   polymer_elements:
       git: https://github.com/dart-lang/polymer_elements.git
   polymer_interop: ^0.2.0
@@ -21,9 +21,9 @@ dependencies:
 dependency_overrides:
   reflectable: 0.2.1
   polymer_interop:
-    git:
-      ref: 0.2.0-dev
-      url: https://github.com/dart-lang/polymer_interop.git
+      git:
+        ref: 0.2.0-rc1
+        url: https://github.com/dart-lang/polymer_interop.git
 transformers:
 - web_components:
      entry_points: web/index.html
