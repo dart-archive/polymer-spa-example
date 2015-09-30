@@ -5,7 +5,6 @@
         <style include="example-style"></style>
         <paper-drawer-panel id="drawerPanel">
 
-            <!--fixme: key don't work-->
             <iron-a11y-keys id="keys" target="body"
                             keys="up down left right space space+shift"
                             on-keys-pressed="keyHandler"></iron-a11y-keys>
@@ -36,7 +35,7 @@
                 <div class="layout horizontal center-center fit">
                     <neon-animated-pages id="pages" selected="{{routeIdx}}" valueattr="hash"
                                          entry-animation="slide-from-right-animation"
-                                         exit-animation="slide-from-left-animation"
+                                         exit-animation="slide-left-animation"
                                          on-tap="cyclePages">
                         <template is="dom-repeat" items="{{pages}}">
                             <section hash="{{item.path}}" class="layout vertical center-center">

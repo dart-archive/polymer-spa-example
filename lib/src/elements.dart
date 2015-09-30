@@ -9,6 +9,7 @@ export 'package:polymer_elements/iron_ajax.dart';
 export 'package:polymer_elements/iron_a11y_keys.dart';
 export 'package:polymer_elements/neon_animated_pages.dart';
 export 'package:polymer_elements/neon_animation/animations/slide_from_right_animation.dart';
+export 'package:polymer_elements/neon_animation/animations/slide_left_animation.dart';
 export 'package:polymer_elements/iron_icon.dart';
 export 'package:polymer_elements/iron_icons.dart';
 export 'package:polymer_elements/iron_iconset.dart';
