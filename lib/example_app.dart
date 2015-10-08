@@ -109,7 +109,7 @@ class ExampleApp extends PolymerElement {
   }
 
   /// Handler for key events.
-  @eventHandler
+  @reflectable
   void keyHandler(event, [_]) {
     print("keyEvent $event");
    /*
@@ -141,7 +141,7 @@ class ExampleApp extends PolymerElement {
   }
 
   /// Cycle pages on click.
-  @eventHandler
+  @reflectable
   void cyclePages(Event event, [_]) {
     // Clicks on links should not cycle pages.
     if (event.target.toString() == 'a') {
@@ -151,14 +151,14 @@ class ExampleApp extends PolymerElement {
   }
 
   /// Close the menu whenever you select an item.
-  @eventHandler
+  @reflectable
   void menuItemClicked(event, [_]) {
     menu.closeDrawer();
   }
 
-  @eventHandler
+  @reflectable
   String computeUrl(String url) => "#$url";
 
-  @eventHandler
+  @reflectable
   String computeIconName(Page item) => "label" + (route != item.path ? '-outline' : '');
 }
