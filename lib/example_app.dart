@@ -15,7 +15,9 @@ import 'package:web_components/web_components.dart' show HtmlImport;
 
 /// Simple class which maps page names to paths.
 class Page extends JsProxy {
+  @reflectable
   final String name;
+  @reflectable
   final String path;
   final bool isDefault;
 
@@ -32,7 +34,7 @@ Can't be const because of JsProxy ??
 @PolymerRegister('example-app')
 class ExampleApp extends PolymerElement {
   /// The current selected [Page].
-  @observable Page selectedPage;
+  Page selectedPage;
 
   /// The list of pages in our app.
   final List<Page> pages =  [
@@ -46,7 +48,7 @@ class ExampleApp extends PolymerElement {
   /// Index of the current [Page]
   int routeIdx;
 
-  @observable var route;
+  var route;
 
   /// The [Router] which is going to control the app.
   final Router router = new Router(useFragment: true);
@@ -57,6 +59,8 @@ class ExampleApp extends PolymerElement {
   IronA11yKeys get keys => $['keys'];
   NeonAnimatedPages get neonPages => $['pages'];
   PaperDrawerPanel get menu => $['drawerPanel'];
+
+  @reflectable
   BodyElement get body => document.body;
 
   ready() {
@@ -76,25 +80,27 @@ class ExampleApp extends PolymerElement {
     var keysToAdd = pages.map((page) => ++i);
     keys.keys = '${keys.keys} ${keysToAdd.join(' ')}';
 
-    //fixme: need to update the view
     set('pages', pages);
-
   }
 
   /// Updates [selectedPage] and the current route whenever the route changes.
   @Observe('routeIdx')
   void routeIdxChanged(int newRouteIdx) {
-    if (newRouteIdx >= 0 && newRouteIdx < pages.length) {
+    if (newRouteIdx != null && newRouteIdx >= 0 && newRouteIdx < pages.length) {
       route = pages[newRouteIdx].path;
     } else {
       route = "";
     }
     if (route.isEmpty) {
-      set('selectedPage', pages.firstWhere((page) => page.isDefault));
+      selectedPage = pages.firstWhere((page) => page.isDefault);
+      set('selectedPage', selectedPage);
     } else {
-      set('selectedPage', pages.firstWhere((page) => page.path == route));
+      selectedPage = pages.firstWhere((page) => page.path == route);
+      set('selectedPage', selectedPage);
     }
-    router.go(selectedPage.name, {});
+    if (selectedPage != null) {
+      router.go(selectedPage.name, {});
+    }
   }
 
   /// Updates [route] whenever we enter a new route.
