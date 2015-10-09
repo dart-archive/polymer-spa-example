@@ -8,10 +8,10 @@ library polymer_core_and_paper_examples.spa.app;
 import 'dart:html';
 import 'dart:js';
 import 'package:polymer/polymer.dart';
+import 'package:polymer_elements/iron_a11y_keys_behavior.dart';
 import 'package:route_hierarchical/client.dart';
 import 'src/elements.dart';
 import 'package:web_components/web_components.dart' show HtmlImport;
-
 
 /// Simple class which maps page names to paths.
 class Page extends JsProxy {
@@ -32,12 +32,21 @@ Can't be const because of JsProxy ??
 /// Element representing the entire example app. There should only be one of
 /// these in existence.
 @PolymerRegister('example-app')
-class ExampleApp extends PolymerElement {
+class ExampleApp extends PolymerElement with IronA11yKeysBehavior {
   /// The current selected [Page].
-  Page selectedPage;
+  @property
+  Page get selectedPage => _selectedPage;
+  @reflectable // https://github.com/dart-lang/polymer-dart/issues/621
+  void set selectedPage(Page newPage) {
+    _selectedPage = newPage;
+    notifyPath('selectedPage', selectedPage);
+  }
+
+  Page _selectedPage;
 
   /// The list of pages in our app.
-  final List<Page> pages =  [
+  @property
+  final List<Page> pages = [
     new Page('Single', 'one', isDefault: true),
     new Page('page', 'two'),
     new Page('app', 'three'),
@@ -46,9 +55,25 @@ class ExampleApp extends PolymerElement {
   ];
 
   /// Index of the current [Page]
-  int routeIdx;
+  @Property(observer: 'routeIdxChanged')
+  int get routeIdx => _routeIdx;
+  @reflectable // https://github.com/dart-lang/polymer-dart/issues/621
+  void set routeIdx(int value) {
+    _routeIdx = value;
+    notifyPath('routeIdx', routeIdx);
+  }
 
-  var route;
+  int _routeIdx;
+
+  @property
+  String get route => _route;
+  @reflectable // https://github.com/dart-lang/polymer-dart/issues/621
+  void set route(String newRoute) {
+    _route = newRoute;
+    notifyPath('route', route);
+  }
+
+  String _route;
 
   /// The [Router] which is going to control the app.
   final Router router = new Router(useFragment: true);
@@ -56,12 +81,8 @@ class ExampleApp extends PolymerElement {
   ExampleApp.created() : super.created();
 
   /// Convenience getters that return the expected types to avoid casts.
-  IronA11yKeys get keys => $['keys'];
   NeonAnimatedPages get neonPages => $['pages'];
   PaperDrawerPanel get menu => $['drawerPanel'];
-
-  @reflectable
-  BodyElement get body => document.body;
 
   ready() {
     // Set up the routes for all the pages.
@@ -75,17 +96,19 @@ class ExampleApp extends PolymerElement {
     });
     router.listen();
 
-    // Set up the number keys to send you to pages.
+    // Set up the key bindings.
     int i = 0;
-    var keysToAdd = pages.map((page) => ++i);
-    keys.keys = '${keys.keys} ${keysToAdd.join(' ')}';
+    var keysToAdd = ['up', 'down', 'left', 'right', 'space', 'space+shift']
+      ..addAll(pages.map((page) => '${++i}'));
 
-    set('pages', pages);
+    for (var key in keysToAdd) {
+      addOwnKeyBinding(key, 'keyHandler');
+    }
   }
 
   /// Updates [selectedPage] and the current route whenever the route changes.
-  @Observe('routeIdx')
-  void routeIdxChanged(int newRouteIdx) {
+  @reflectable
+  void routeIdxChanged(int newRouteIdx, [_]) {
     if (newRouteIdx != null && newRouteIdx >= 0 && newRouteIdx < pages.length) {
       route = pages[newRouteIdx].path;
     } else {
@@ -93,10 +116,8 @@ class ExampleApp extends PolymerElement {
     }
     if (route.isEmpty) {
       selectedPage = pages.firstWhere((page) => page.isDefault);
-      set('selectedPage', selectedPage);
     } else {
       selectedPage = pages.firstWhere((page) => page.path == route);
-      set('selectedPage', selectedPage);
     }
     if (selectedPage != null) {
       router.go(selectedPage.name, {});
@@ -108,31 +129,27 @@ class ExampleApp extends PolymerElement {
     route = e.path;
     if (route != null && route.isNotEmpty) {
       Page page = pages.firstWhere((Page item) => item.path == route);
-      set('routeIdx', pages.indexOf(page));
+      routeIdx = pages.indexOf(page);
     } else {
-      set('routeIdx', -1);
+      routeIdx = -1;
     }
   }
 
   /// Handler for key events.
   @reflectable
   void keyHandler(event, [_]) {
-    print("keyEvent $event");
-   /*
-     var detail = new JsObject.fromBrowserObject(e)['detail'];
-   switch (detail['key']) {
+    var detail = event.detail;
+    switch (detail['key']) {
       case 'left':
       case 'up':
-        corePages.selectPrevious(false);
+        neonPages.selectPrevious();
         return;
       case 'right':
       case 'down':
-        corePages.selectNext(false);
+        neonPages.selectNext();
         return;
       case 'space':
-        detail['shift']
-            ? corePages.selectPrevious(false)
-            : corePages.selectNext(false);
+        detail['shift'] ? neonPages.selectPrevious() : neonPages.selectNext();
         return;
     }
 
@@ -140,10 +157,10 @@ class ExampleApp extends PolymerElement {
     try {
       var num = int.parse(detail['key']);
       if (num <= pages.length) {
-        route = pages[num - 1].path;
+        routeIdx = num - 1;
       }
       return;
-    } catch (e) {}*/
+    } catch (e) {}
   }
 
   /// Cycle pages on click.
@@ -153,7 +170,9 @@ class ExampleApp extends PolymerElement {
     if (event.target.toString() == 'a') {
       return;
     }
-    (_["sourceEvent"] as MouseEvent).shiftKey ? neonPages.selectPrevious() : neonPages.selectNext();
+    (_["sourceEvent"] as MouseEvent).shiftKey
+        ? neonPages.selectPrevious()
+        : neonPages.selectNext();
   }
 
   /// Close the menu whenever you select an item.
@@ -166,5 +185,6 @@ class ExampleApp extends PolymerElement {
   String computeUrl(String url) => "#$url";
 
   @reflectable
-  String computeIconName(Page item) => "label" + (route != item.path ? '-outline' : '');
+  String computeIconName(String itemPath, String route) =>
+      "label" + (route != itemPath ? '-outline' : '');
 }
