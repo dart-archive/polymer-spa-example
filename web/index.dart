@@ -3,7 +3,7 @@
  */
 
 import 'package:polymer/polymer.dart';
-import "package:polymer_spa_example/example_app.dart";
+import "package:polymer_spa_example/src/example_app.dart";
 
 main() async {
   await initPolymer();

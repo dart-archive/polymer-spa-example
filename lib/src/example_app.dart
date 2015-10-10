@@ -2,7 +2,7 @@
 // for details. All rights reserved. Use of this source code is governed by a
 // BSD-style license that can be found in the LICENSE file.
 
-@HtmlImport('src/example_app.html')
+@HtmlImport('example_app.html')
 library polymer_core_and_paper_examples.spa.app;
 
 import 'dart:html';
@@ -10,7 +10,7 @@ import 'dart:js';
 import 'package:polymer/polymer.dart';
 import 'package:polymer_elements/iron_a11y_keys_behavior.dart';
 import 'package:route_hierarchical/client.dart';
-import 'src/elements.dart';
+import 'package:polymer_spa_example/elements.dart';
 import 'package:web_components/web_components.dart' show HtmlImport;
 
 /// Simple class which maps page names to paths.
@@ -21,9 +21,6 @@ class Page extends JsProxy {
   final String path;
   final bool isDefault;
 
-  /*
-Can't be const because of JsProxy ??
- */
   Page(this.name, this.path, {this.isDefault: false});
 
   String toString() => '$name';
@@ -41,6 +38,8 @@ class ExampleApp extends PolymerElement with IronA11yKeysBehavior {
     _selectedPage = newPage;
     notifyPath('selectedPage', selectedPage);
   }
+
+
 
   Page _selectedPage;
 
@@ -82,7 +81,7 @@ class ExampleApp extends PolymerElement with IronA11yKeysBehavior {
 
   /// Convenience getters that return the expected types to avoid casts.
   NeonAnimatedPages get neonPages => $['pages'];
-  PaperDrawerPanel get menu => $['drawerPanel'];
+  PaperDrawerPanel get drawerPanel => $['drawerPanel'];
 
   ready() {
     // Set up the routes for all the pages.
@@ -97,6 +96,8 @@ class ExampleApp extends PolymerElement with IronA11yKeysBehavior {
     router.listen();
 
     // Set up the key bindings.
+    keyEventTarget = document.body;
+
     int i = 0;
     var keysToAdd = ['up', 'down', 'left', 'right', 'space', 'space+shift']
       ..addAll(pages.map((page) => '${++i}'));
@@ -137,9 +138,9 @@ class ExampleApp extends PolymerElement with IronA11yKeysBehavior {
 
   /// Handler for key events.
   @reflectable
-  void keyHandler(event, [_]) {
-    var detail = event.detail;
-    switch (detail['key']) {
+  void keyHandler(CustomEventWrapper event, [_]) {
+    JsObject detail = event.detail;
+    switch (detail["combo"]) {
       case 'left':
       case 'up':
         neonPages.selectPrevious();
@@ -149,7 +150,10 @@ class ExampleApp extends PolymerElement with IronA11yKeysBehavior {
         neonPages.selectNext();
         return;
       case 'space':
-        detail['shift'] ? neonPages.selectPrevious() : neonPages.selectNext();
+        neonPages.selectNext();
+        return;
+      case 'space+shift':
+        neonPages.selectPrevious();
         return;
     }
 
@@ -178,7 +182,7 @@ class ExampleApp extends PolymerElement with IronA11yKeysBehavior {
   /// Close the menu whenever you select an item.
   @reflectable
   void menuItemClicked(event, [_]) {
-    menu.closeDrawer();
+    drawerPanel.closeDrawer();
   }
 
   @reflectable
