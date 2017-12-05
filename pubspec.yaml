@@ -1,5 +1,4 @@
 name: polymer_spa_example
-version: 0.0.1
 description: A simple example of a full polymer app with multiple pages.
 author: Dart Team <misc@dartlang.org>
 homepage: https://github.com/dart-lang/polymer-spa-example
