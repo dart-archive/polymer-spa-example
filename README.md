@@ -1,5 +1,7 @@
 # Polymer Single Page App Example
 
+**Note:** This sample is for polymer.dart < 0.17
+
 A simple example of a full polymer app with multiple pages. It is the end
 solution for the tutorial which lives [here][tutorial].
 
