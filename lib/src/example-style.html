@@ -1,0 +1,70 @@
+<dom-module id="example-style">
+    <template>
+        <style>
+            :host {
+                font-family: "RobotoDraft";
+                font-weight: 300;
+                @apply(--layout-horizontal);
+                @apply(--paper-font-body2);
+                height: 100%;
+            }
+
+            [nav] {
+                border-right: 1px solid #ccc;
+            }
+
+            [main] {
+                background-color: #eee;
+            }
+
+            [content] {
+                height: 100%
+            }
+
+            paper-toolbar {
+                --paper-toolbar-background: #03a9f4;
+                --paper-toolbar-color: #fff;
+            }
+
+            neon-animated-pages {
+                width: 85%;
+                height: 85%;
+                -webkit-user-select: none;
+                overflow: hidden;
+            }
+
+            neon-animated-pages > * {
+                border-radius: 5px;
+                font-size: 50px;
+                background-color: white;
+            }
+
+            paper-menu {
+                --paper-menu-color: #01579b;
+                margin: 10px 0 0 0;
+            }
+
+            paper-menu > paper-item {
+                transition: all 300ms ease-in-out;
+            }
+
+            paper-item a {
+                text-decoration: none;
+                color: currentcolor;
+                margin-left: 5px;
+            }
+
+            paper-menu > paper-item.core-selected {
+                background: #e1f5fe;
+            }
+
+            @media all and (max-width: 480px) {
+                neon-animated-pages {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+        </style>
+    </template>
+</dom-module>

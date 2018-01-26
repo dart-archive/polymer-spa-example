@@ -1,47 +1,50 @@
-<polymer-element name="example-app">
-  <template>
-    <link rel="stylesheet" href="example_app.css">
+<link rel="import" href="example-style.html">
 
-    <!-- Keyboard nav controller. -->
-    <core-a11y-keys id="keys" target="{{body}}"
-                    keys="up down left right space space+shift"
-                    on-keys-pressed="{{keyHandler}}"></core-a11y-keys>
+<dom-module id="example-app">
+    <template>
+        <style include="example-style"></style>
+        <paper-drawer-panel id="drawerPanel">
 
-    <core-scaffold id="scaffold">
-      <nav>
-        <core-toolbar>
-          <span>Single Page Polymer</span>
-        </core-toolbar>
-        <core-menu id="menu" valueattr="hash" selected="{{route}}">
-          <template repeat="{{page in pages}}">
-            <paper-item hash="{{page.path}}"
-                        on-click="{{menuItemClicked}}" noink>
-              <core-icon icon="label{{route != page.path ? '-outline' : ''}}">
-              </core-icon>
-              <a _href="#{{page.path}}">{{page.name}}</a>
-            </paper-item>
-          </template>
-        </core-menu>
-      </nav>
+            <div nav drawer>
+                <paper-toolbar>
+                    <span>Single Page Polymer</span>
+                </paper-toolbar>
+                <paper-menu id="menu" valueattr="hash" selected="{{routeIdx}}">
+                    <template is="dom-repeat" items="{{pages}}">
+                        <paper-item hash="{{item.path}}"
+                                    on-click="menuItemClicked" noink>
+                            <iron-icon icon="{{computeIconName(item.path, route)}}">
+                            </iron-icon>
+                            <a href$="{{computeUrl(item.path)}}">{{item.name}}</a>
+                        </paper-item>
+                    </template>
+                </paper-menu>
+            </div>
 
-      <core-toolbar tool flex>
-        <div flex>{{selectedPage.name}}</div>
-        <core-icon-button icon="refresh"></core-icon-button>
-        <core-icon-button icon="add"></core-icon-button>
-      </core-toolbar>
+            <paper-header-panel main mode="waterfall">
+                <paper-toolbar>
+                    <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                    <div class="flex">{{selectedPage.name}}</div>
+                    <paper-icon-button icon="refresh"></paper-icon-button>
+                    <paper-icon-button icon="add"></paper-icon-button>
+                </paper-toolbar>
+                <div class="layout horizontal center-center fit">
+                    <neon-animated-pages id="pages"
+                                         selected="{{routeIdx}}"
+                                         valueattr="hash"
+                                         entry-animation="slide-from-right-animation"
+                                         exit-animation="slide-left-animation"
+                                         on-tap="cyclePages">
+                        <template is="dom-repeat" items="{{pages}}">
+                            <section hash="{{item.path}}" class="layout vertical center-center">
+                                <div>{{item.name}}</div>
+                            </section>
+                        </template>
+                    </neon-animated-pages>
+                </div>
 
-      <div layout horizontal center-center fit>
-        <core-animated-pages id="pages" selected="{{route}}" valueattr="hash"
-                             transitions="slide-from-right"
-                             on-tap="{{cyclePages}}">
-          <template repeat="{{page in pages}}">
-            <section hash="{{page.path}}" layout vertical center-center>
-              <div>{{page.name}}</div>
-            </section>
-          </template>
-        </core-animated-pages>
-      </div>
+            </paper-header-panel>
 
-    </core-scaffold>
-  </template>
-</polymer-element>
+        </paper-drawer-panel>
+    </template>
+</dom-module>
